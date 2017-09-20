@@ -1,0 +1,28 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <h1>
+                <asp:Image ID="Image1" runat="server" ImageUrl="res/logo.png" Height="32px" Width="50px" />
+                Luigi's
+            </h1>
+            <nav>
+                <a href="Items.aspx">Items</a> |
+            <a href="PurchaseOrder.aspx">Purchase Order</a> |
+            <a href="Monthly.aspx">Monthly Sales & Expenses</a>
+            </nav>
+            <asp:ContentPlaceHolder ID="Form" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>
