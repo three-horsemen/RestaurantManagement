@@ -16,9 +16,9 @@
                 Luigi's
             </h1>
             <nav>
-                <a href="Items.aspx">Items</a> |
+                <a href="Stocks.aspx">Stocks</a> |
             <a href="PurchaseOrder.aspx">Purchase Order</a> |
-            <a href="Monthly.aspx">Monthly Sales & Expenses</a>
+            <a href="Report.aspx">Sales & Expenses</a>
             </nav>
             <asp:ContentPlaceHolder ID="Form" runat="server">
             </asp:ContentPlaceHolder>

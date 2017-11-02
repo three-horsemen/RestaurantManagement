@@ -11,4 +11,9 @@ public partial class _Default : System.Web.UI.Page
     {
 
     }
+
+    protected void purchaseIngredients_Click(object sender, EventArgs e)
+    {
+
+    }
 }
