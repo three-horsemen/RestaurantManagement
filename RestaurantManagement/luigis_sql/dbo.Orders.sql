@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Orders]
+(
+	[order_id] INT NOT NULL , 
+    [timestamp] DATETIME NOT NULL, 
+    [item_id] INT NOT NULL, 
+    [quantity] INT NOT NULL, 
+    [total_price] DECIMAL NOT NULL 
+)
