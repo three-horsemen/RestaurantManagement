@@ -96,6 +96,8 @@ public partial class _Default : System.Web.UI.Page
         {
             con.Close();
         }
+        consumption.DataBind();
+        ingredientsRequired.DataBind();
     }
 
     protected void ingredientsRequired_DataBound(object sender, EventArgs e)
@@ -115,6 +117,6 @@ public partial class _Default : System.Web.UI.Page
                 purchaseIngredients.Enabled = true;
             }
         }
-        catch {}
+        catch { }
     }
 }

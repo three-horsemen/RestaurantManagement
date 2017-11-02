@@ -18,7 +18,7 @@
     <asp:SqlDataSource ID="consumptionSource" runat="server" ConnectionString="<%$connectionStrings:luigis %>"
         SelectCommand="
 select
-	Ingredients.ingredient_name, ceiling(sum(orders.quantity * recipe.ingredient_quantity)/3.0) as avg_ingredient_qty_3_days
+	Ingredients.ingredient_name as 'Ingredient Name', ceiling(sum(orders.quantity * recipe.ingredient_quantity)/3.0) as '3 Average Ingredients'
 from 
 	orders, items, recipe, Ingredients
 where 
@@ -30,7 +30,7 @@ group by
     <asp:SqlDataSource ID="ingredientsRequiredSource" runat="server" ConnectionString="<%$connectionStrings:luigis %>"
         SelectCommand="
 select 
-	Ingredients.ingredient_name, ceiling(sum(orders.quantity * recipe.ingredient_quantity)/1.5 - Ingredients.ingredient_quantity) as future_requirement, ceiling(sum(orders.quantity * recipe.ingredient_quantity)/1.5 - Ingredients.ingredient_quantity) * Ingredients.ingredient_price as replenish_cost
+	Ingredients.ingredient_name as 'Ingredient Name', ceiling(sum(orders.quantity * recipe.ingredient_quantity)/1.5 - Ingredients.ingredient_quantity) as 'Future Requirement', ceiling(sum(orders.quantity * recipe.ingredient_quantity)/1.5 - Ingredients.ingredient_quantity) * Ingredients.ingredient_price as 'Replenish Cost'
 from 
 	orders, items, recipe, Ingredients
 where 

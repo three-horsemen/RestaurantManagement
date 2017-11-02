@@ -3,5 +3,5 @@ AS
 	DELETE FROM Store;
 	INSERT INTO Store(cash)
 	VALUES
-	(1000)
+	(3000)
 RETURN 0
