@@ -14,16 +14,20 @@
         <asp:Button ID="clearCookieButton" Text="Forget I was here!" runat="server" OnClick="clearCookieButton_Click"/>
         <div>
             <h1>
-                <asp:Image ID="Image1" runat="server" ImageUrl="res/logo.png" Height="32px" Width="50px" />
-                Luigi's
+                <div style="margin-left: auto; margin-right: auto; text-align: center; color: white">
+                    <asp:Image ID="Image1" runat="server" ImageUrl="res/logo.png" Height="32px" Width="50px"/>
+                    Luigi's Restaurant
+                </div>
             </h1>
-            <nav>
-                <a href="Stocks.aspx">Stocks</a> |
-                <a href="PurchaseOrder.aspx">Purchase Order</a> |
-                <a href="Report.aspx">Sales & Expenses</a>
-            </nav>
-            <asp:ContentPlaceHolder ID="Form" runat="server">
-            </asp:ContentPlaceHolder>
+            <div style="margin-left: auto; margin-right: auto; color: white">
+                <nav>
+                    <a href="Stocks.aspx" style="color: white">Stocks</a> |
+                    <a href="PurchaseOrder.aspx" style="color: white">Purchase Order</a> |
+                    <a href="Report.aspx" style="color: white">Sales & Expenses</a>
+                </nav>
+                <asp:ContentPlaceHolder ID="Form" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
         </div>
     </form>
 </body>
