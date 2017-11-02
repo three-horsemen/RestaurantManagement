@@ -52,19 +52,9 @@
     <br />
 
     Quantity:
-    <asp:DropDownList ID="addToCartQuantity" runat="server">
-        <asp:ListItem>1</asp:ListItem>
-        <asp:ListItem>2</asp:ListItem>
-        <asp:ListItem>3</asp:ListItem>
-        <asp:ListItem>4</asp:ListItem>
-        <asp:ListItem>5</asp:ListItem>
-        <asp:ListItem>6</asp:ListItem>
-        <asp:ListItem>7</asp:ListItem>
-        <asp:ListItem>8</asp:ListItem>
-        <asp:ListItem>9</asp:ListItem>
-        <asp:ListItem>10</asp:ListItem>
-    </asp:DropDownList>
-
+    <asp:TextBox ID="addToCartQuantity" runat="server"></asp:TextBox>
+    <asp:RangeValidator ID="rvclass" runat="server" ControlToValidate="addToCartQuantity" ErrorMessage="Please enter a number from 1 to 100" MaximumValue="100" MinimumValue="1" Type="Integer"></asp:RangeValidator>
+    <br />
     <asp:Button ID="addToCart" runat="server" Text="Add To Cart" OnClick="addToCart_Click" />
     <h3>Cart <asp:Button ID="clearCartB" runat="server" Text="Clear" OnClick="clearCartB_Click" />
     </h3>

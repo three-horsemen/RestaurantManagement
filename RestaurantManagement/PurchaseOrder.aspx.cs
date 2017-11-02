@@ -83,45 +83,49 @@ public partial class _Default : System.Web.UI.Page
 
     protected void addToCart_Click(object sender, EventArgs e)
     {
-        string item_id = items.SelectedValue;
-        int itemId = int.Parse(item_id);
-        if (itemDetails.Rows.Count > 0)
+        try
         {
-            DataTable cartItems = (DataTable)Session["cartItems"];
-
-            decimal sumTotalDecimal = 0;
-            DataRow row = null;
-            foreach (DataRow rowI in cartItems.Rows)
+            string item_id = items.SelectedValue;
+            int itemId = int.Parse(item_id);
+            if (itemDetails.Rows.Count > 0)
             {
-                sumTotalDecimal += (int)rowI["quantity"] * (decimal)rowI["price"];
-                if (((int)rowI["item_id"]) == int.Parse(itemDetails.Rows[0].Cells[1].Text))
+                DataTable cartItems = (DataTable)Session["cartItems"];
+
+                decimal sumTotalDecimal = 0;
+                DataRow row = null;
+                foreach (DataRow rowI in cartItems.Rows)
                 {
-                    row = rowI;
-                    row["quantity"] = ((int)row["quantity"]) + int.Parse(addToCartQuantity.SelectedValue);
-                    break;
+                    sumTotalDecimal += (int)rowI["quantity"] * (decimal)rowI["price"];
+                    if (((int)rowI["item_id"]) == int.Parse(itemDetails.Rows[0].Cells[1].Text))
+                    {
+                        row = rowI;
+                        row["quantity"] = ((int)row["quantity"]) + int.Parse(addToCartQuantity.Text);
+                        break;
+                    }
                 }
-            }
-            sumTotal.Text = sumTotalDecimal.ToString();
+                sumTotal.Text = sumTotalDecimal.ToString();
 
-            if (row == null)
+                if (row == null)
+                {
+                    row = cartItems.NewRow();
+                    cartItems.Rows.Add(row);
+                    row["quantity"] = int.Parse(addToCartQuantity.Text);
+                }
+
+                row["item_id"] = int.Parse(itemDetails.Rows[0].Cells[1].Text);
+                row["name"] = itemDetails.Rows[1].Cells[1].Text;
+                row["price"] = decimal.Parse(itemDetails.Rows[2].Cells[1].Text);
+
+                Session["cartItems"] = cartItems;
+
+                displayCart(cartItems);
+            }
+            else
             {
-                row = cartItems.NewRow();
-                cartItems.Rows.Add(row);
-                row["quantity"] = int.Parse(addToCartQuantity.SelectedValue);
+                cartStatus.Text = "Please select an item to be added to the cart";
             }
-
-            row["item_id"] = int.Parse(itemDetails.Rows[0].Cells[1].Text);
-            row["name"] = itemDetails.Rows[1].Cells[1].Text;
-            row["price"] = decimal.Parse(itemDetails.Rows[2].Cells[1].Text);
-
-            Session["cartItems"] = cartItems;
-
-            displayCart(cartItems);
         }
-        else
-        {
-            cartStatus.Text = "Please select an item to be added to the cart";
-        }
+        catch { }
     }
 
     protected void confirmOrder_Click(object sender, EventArgs e)
