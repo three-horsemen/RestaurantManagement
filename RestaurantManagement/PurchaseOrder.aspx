@@ -38,7 +38,14 @@
     <h3>Ingredients</h3>
     <asp:GridView ID="recipe" runat="server" DataSourceID="ingredientSource" AutoGenerateColumns="false" AutoGenerateEditButton="true">
         <Columns>
-            <asp:BoundField DataField="ingredient_id" HeaderText="Ingredient ID" />
+            <asp:TemplateField HeaderText="Ingredient ID">
+                <EditItemTemplate>
+                    <asp:Label ID="ingredient_id" Text='<%# Bind("ingredient_id") %>' runat="server" />
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="ingredient_id" Text='<%# Eval("ingredient_id") %>' runat="server" />
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:BoundField DataField="Ingredient" HeaderText="Ingredient" ReadOnly="true" />
             <asp:BoundField DataField="Price" HeaderText="Price" ReadOnly="true" />
             <asp:BoundField DataField="Quantity" HeaderText="Quantity" />

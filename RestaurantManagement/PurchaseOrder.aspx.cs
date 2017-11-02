@@ -30,14 +30,6 @@ public partial class _Default : System.Web.UI.Page
         return dt;
     }
 
-    DataTable newEmptyRecipeIngredients()
-    {
-        DataTable dt = new DataTable();
-        dt.Columns.Add("item_quantity", typeof(int));
-        dt.Columns.Add("total_quantity", typeof(int));
-        return dt;
-    }
-
     void displayCart(DataTable cartItems)
     {
         cart.DataSource = cartItems;
@@ -52,17 +44,21 @@ public partial class _Default : System.Web.UI.Page
         }
         sumTotal.Text = sumTotalDecimal.ToString();
 
-        DataTable cartRecipeIngredients = newEmptyRecipeIngredients();
+        DataTable cartRecipeIngredients = new DataTable();
         if (itemIds.Count > 0)
         {
             SqlConnection con = new SqlConnection(WebConfigurationManager.ConnectionStrings["luigis"].ConnectionString);
             using (con)
             {
-                SqlCommand cmd = new SqlCommand("select Recipe.item_id, Ingredients.ingredient_id as ingredient_id, Recipe.ingredient_quantity as ingredient_quantity, Ingredients.ingredient_quantity as current_stock, Ingredients.ingredient_name as name, ingredient_price as price from Recipe, Ingredients where Ingredients.ingredient_id=Recipe.ingredient_id and Recipe.item_id in (" + String.Join(", ", itemIds) +
+                SqlCommand cmd = new SqlCommand(
+                    "select Recipe.item_id, Ingredients.ingredient_id as ingredient_id, Ingredients.ingredient_name as name, ingredient_price as price, Ingredients.ingredient_quantity as current_stock, Recipe.ingredient_quantity as ingredient_quantity from Recipe, Ingredients"
+                    + " where Ingredients.ingredient_id=Recipe.ingredient_id and Recipe.item_id in (" + String.Join(", ", itemIds) +
                     ")", con);
                 SqlDataAdapter adap = new SqlDataAdapter(cmd);
                 adap.Fill(cartRecipeIngredients);
             }
+            cartRecipeIngredients.Columns.Add("item_quantity", typeof(int));
+            cartRecipeIngredients.Columns.Add("total_quantity", typeof(int));
 
             foreach (DataRow recipeIngredient in cartRecipeIngredients.Rows)
             {
@@ -83,6 +79,12 @@ public partial class _Default : System.Web.UI.Page
 
     protected void addToCart_Click(object sender, EventArgs e)
     {
+        if (addToCartQuantity.Text == "")
+        {
+            cartStatus.Text = "Must provide a valid quantity";
+            return;
+        }
+        cartStatus.Text = "";
         try
         {
             string item_id = items.SelectedValue;
