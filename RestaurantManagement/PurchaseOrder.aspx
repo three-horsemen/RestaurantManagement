@@ -47,7 +47,26 @@
         </UpdateParameters>
     </asp:SqlDataSource>
 
-    <asp:Button ID="addToCart" runat="server" Text="Add To Cart" />
+    <asp:Label ID="cartStatus" runat="server" Text=""></asp:Label>
+    <br />
+
+    Quantity:
+    <asp:DropDownList ID="addToCartQuantity" runat="server">
+        <asp:ListItem>1</asp:ListItem>
+        <asp:ListItem>2</asp:ListItem>
+        <asp:ListItem>3</asp:ListItem>
+        <asp:ListItem>4</asp:ListItem>
+        <asp:ListItem>5</asp:ListItem>
+        <asp:ListItem>6</asp:ListItem>
+        <asp:ListItem>7</asp:ListItem>
+        <asp:ListItem>8</asp:ListItem>
+        <asp:ListItem>9</asp:ListItem>
+        <asp:ListItem>10</asp:ListItem>
+    </asp:DropDownList>
+
+    <asp:Button ID="addToCart" runat="server" Text="Add To Cart" OnClick="addToCart_Click" />
+    <h3>Cart</h3>
+    <asp:GridView ID="cart" runat="server"></asp:GridView>
     <h3>Purchase Order</h3>
     <asp:GridView ID="purchaseOrder" runat="server"></asp:GridView>
     <asp:Button ID="confirmOrder" runat="server" Text="ConfirmOrder" />
