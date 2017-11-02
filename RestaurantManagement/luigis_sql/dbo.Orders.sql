@@ -1,4 +1,5 @@
-﻿CREATE TABLE [dbo].[Orders]
+﻿DROP TABLE [dbo].[Orders];
+CREATE TABLE [dbo].[Orders]
 (
 	[order_id] INT NOT NULL , 
     [timestamp] DATE NOT NULL, 

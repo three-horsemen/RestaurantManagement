@@ -1,4 +1,5 @@
-﻿CREATE TABLE [dbo].[Provides]
+﻿DROP TABLE [dbo].[Provides];
+CREATE TABLE [dbo].[Provides]
 (
 	[timestamp] DATE NOT NULL, 
     [ingredient_id] INT NOT NULL, 

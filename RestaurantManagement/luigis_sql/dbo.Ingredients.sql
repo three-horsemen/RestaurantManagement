@@ -1,4 +1,5 @@
-﻿CREATE TABLE [dbo].[Ingredients]
+﻿DROP TABLE [dbo].[Ingredients];
+CREATE TABLE [dbo].[Ingredients]
 (
 	[ingredient_id] INT NOT NULL PRIMARY KEY, 
     [ingredient_name] VARCHAR(50) NOT NULL, 
