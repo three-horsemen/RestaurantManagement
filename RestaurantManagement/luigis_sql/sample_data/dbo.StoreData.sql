@@ -1,0 +1,7 @@
+﻿CREATE PROCEDURE [dbo].[StoreData]
+AS
+	DELETE FROM Store;
+	INSERT INTO Store(cash)
+	VALUES
+	(1000)
+RETURN 0
