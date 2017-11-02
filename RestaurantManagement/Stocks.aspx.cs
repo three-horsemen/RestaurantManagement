@@ -81,6 +81,21 @@ public partial class _Default : System.Web.UI.Page
             confirmPurchase.Text += " Time: " + DateTime.Now.ToString();
             con.Close();
         }
+
+
+        string updateSql2 = "update  Ingredients set Ingredients.ingredient_quantity = Ingredients.ingredient_quantity + t1.future_requirement from(select Ingredients.ingredient_id, ceiling(sum(orders.quantity * recipe.ingredient_quantity) / 1.5 - Ingredients.ingredient_quantity) as future_requirement, ceiling(sum(orders.quantity * recipe.ingredient_quantity) / 1.5 - Ingredients.ingredient_quantity) * Ingredients.ingredient_price as replenish_cost from orders, items, recipe, Ingredients where orders.item_id = items.item_id and items.item_id = recipe.item_id and recipe.ingredient_id = Ingredients.ingredient_id and Orders.timestamp Between DATEADD(d, -3, GETDATE()) and GETDATE() group by Ingredients.ingredient_quantity, Ingredients.ingredient_price, Ingredients.ingredient_id having ceiling(sum(orders.quantity * recipe.ingredient_quantity) / 1.5 - Ingredients.ingredient_quantity) > 0) as t1 where t1.ingredient_id = Ingredients.ingredient_id";
+        SqlCommand cmd2 = new SqlCommand(updateSql2, con);
+        try
+        {
+            con.Open();
+            int affected = cmd2.ExecuteNonQuery();
+            cmd2.Dispose();
+        }
+        catch { }
+        finally
+        {
+            con.Close();
+        }
     }
 
     protected void ingredientsRequired_DataBound(object sender, EventArgs e)
@@ -95,7 +110,7 @@ public partial class _Default : System.Web.UI.Page
         totalReplenishCost.Text = totalValue.ToString();
         try
         {
-            if (totalValue <= Convert.ToInt32(currentCash.Text))
+            if (totalValue <= Convert.ToInt32(currentCash.Text) && totalValue > 0)
             {
                 purchaseIngredients.Enabled = true;
             }
