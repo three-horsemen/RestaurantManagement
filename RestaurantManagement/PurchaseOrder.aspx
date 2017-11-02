@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="PurchaseOrder.aspx.cs" Inherits="_Default" Theme="LuigiTheme"%>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="PurchaseOrder.aspx.cs" Inherits="_Default" Theme="LuigiTheme" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
@@ -36,10 +36,18 @@
     </asp:SqlDataSource>
 
     <h3>Ingredients</h3>
-    <asp:GridView ID="recipe" runat="server" DataSourceID="ingredientSource" AutoGenerateColumns="true" AutoGenerateEditButton="true" />
+    <asp:GridView ID="recipe" runat="server" DataSourceID="ingredientSource" AutoGenerateColumns="false" AutoGenerateEditButton="true">
+        <Columns>
+            <asp:BoundField DataField="ingredient_id" HeaderText="Ingredient ID" />
+            <asp:BoundField DataField="Ingredient" HeaderText="Ingredient" ReadOnly="true" />
+            <asp:BoundField DataField="Price" HeaderText="Price" ReadOnly="true" />
+            <asp:BoundField DataField="Quantity" HeaderText="Quantity" />
+            <asp:BoundField DataField="Cost" HeaderText="Cost" ReadOnly="true" />
+        </Columns>
+    </asp:GridView>
     <asp:SqlDataSource ID="ingredientSource" runat="server" ConnectionString="<%$connectionStrings:luigis %>"
-        SelectCommand="select ingredient_name as Ingredient, ingredient_price as Price, Recipe.ingredient_quantity as Quantity, ingredient_price*Recipe.ingredient_quantity as Cost from Ingredients, Recipe where Ingredients.ingredient_id=Recipe.ingredient_id and Recipe.item_id=@item_id"
-        UpdateCommand="update Items set price=@price where item_id=@item_code">
+        SelectCommand="select Recipe.ingredient_id as ingredient_id, ingredient_name as Ingredient, ingredient_price as Price, Recipe.ingredient_quantity as Quantity, ingredient_price*Recipe.ingredient_quantity as Cost from Ingredients, Recipe where Ingredients.ingredient_id=Recipe.ingredient_id and Recipe.item_id=@item_id"
+        UpdateCommand="update Recipe set ingredient_quantity=@Quantity where item_id=@item_code and ingredient_id=@ingredient_id">
         <SelectParameters>
             <asp:ControlParameter Name="item_id" ControlID="items" PropertyName="SelectedValue" />
         </SelectParameters>
@@ -56,7 +64,8 @@
     <asp:RangeValidator ID="rvclass" runat="server" ControlToValidate="addToCartQuantity" ErrorMessage="Please enter a number from 1 to 100" MaximumValue="100" MinimumValue="1" Type="Integer"></asp:RangeValidator>
     <br />
     <asp:Button ID="addToCart" runat="server" Text="Add To Cart" OnClick="addToCart_Click" />
-    <h3>Cart <asp:Button ID="clearCartB" runat="server" Text="Clear" OnClick="clearCartB_Click" />
+    <h3>Cart
+        <asp:Button ID="clearCartB" runat="server" Text="Clear" OnClick="clearCartB_Click" />
     </h3>
     <asp:GridView ID="cart" runat="server"></asp:GridView>
     <h3>Purchase Order</h3>
