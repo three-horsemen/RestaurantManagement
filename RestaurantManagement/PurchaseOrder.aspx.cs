@@ -141,7 +141,7 @@ public partial class _Default : System.Web.UI.Page
 
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("update Store set cash=cash-@sum_total where cash >= @sum_total", con);
+                    SqlCommand cmd = new SqlCommand("update Store set cash=cash+@sum_total where cash >= @sum_total", con);
                     cmd.Parameters.AddWithValue("sum_total", sumTotalDecimal);
                     cmd.Transaction = transaction;
                     int balanceUpdateResult = cmd.ExecuteNonQuery();
@@ -150,47 +150,64 @@ public partial class _Default : System.Web.UI.Page
                     DataTable cartItems = (DataTable)Session["cartItems"];
                     if (cartItems != null)
                     {
-                        foreach (DataRow cartItem in cartItems.Rows)
+                        cmd.CommandText = "select count(*)+1 as order_id from Orders";
+                        cmd.Parameters.Clear();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read())
                         {
-                            cmd.CommandText = "INSERT INTO Orders(order_id, item_id, quantity, total_price, timestamp) VALUES ((select count(*)+1 from Orders), @item_id, @quantity, @total_price, @timestamp)";
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("item_id", cartItem["item_id"]);
-                            cmd.Parameters.AddWithValue("quantity", cartItem["quantity"]);
-                            cmd.Parameters.AddWithValue("total_price", (decimal)cartItem["price"] * (int)cartItem["quantity"]);
-                            cmd.Parameters.AddWithValue("timestamp", DateTime.Now);
-                            orderUpdateResult += cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    int ingredientUpdateResult = 0;
-                    DataTable cartRecipeIngredients = (DataTable)Session["cartRecipeIngredients"];
-                    if (cartRecipeIngredients != null)
-                    {
-                        foreach (DataRow recipeIngredient in cartRecipeIngredients.Rows)
-                        {
-                            cmd.CommandText = "UPDATE Ingredients set ingredient_quantity=ingredient_quantity-@quantity where ingredient_id=@ingredient_id and ingredient_quantity>@quantity";
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("ingredient_id", (int)recipeIngredient["ingredient_id"]);
-                            cmd.Parameters.AddWithValue("quantity", (int)recipeIngredient["total_quantity"]);
-                            ingredientUpdateResult += cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    if (balanceUpdateResult == 1)
-                        if (cartItems.Rows.Count == orderUpdateResult)
-                            if (cartRecipeIngredients.Rows.Count == ingredientUpdateResult)
+                            int newOrderId = (int)reader["order_id"];
+                            reader.Close();
+                            foreach (DataRow cartItem in cartItems.Rows)
                             {
-                                transaction.Commit();
-                                orderStatus.Text = "Order completed successfully";
-                                Session["cartItems"] = newEmptyCart();
-                                return;
+                                cmd.CommandText = "INSERT INTO Orders(order_id, item_id, quantity, total_price, timestamp) VALUES (@order_id, @item_id, @quantity, @total_price, @timestamp)";
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("order_id", newOrderId);
+                                cmd.Parameters.AddWithValue("item_id", cartItem["item_id"]);
+                                cmd.Parameters.AddWithValue("quantity", cartItem["quantity"]);
+                                cmd.Parameters.AddWithValue("total_price", (decimal)cartItem["price"] * (int)cartItem["quantity"]);
+                                cmd.Parameters.AddWithValue("timestamp", DateTime.Now);
+                                orderUpdateResult += cmd.ExecuteNonQuery();
                             }
+
+
+                            int ingredientUpdateResult = 0;
+                            DataTable cartRecipeIngredients = (DataTable)Session["cartRecipeIngredients"];
+                            if (cartRecipeIngredients != null)
+                            {
+                                foreach (DataRow recipeIngredient in cartRecipeIngredients.Rows)
+                                {
+                                    cmd.CommandText = "UPDATE Ingredients set ingredient_quantity=ingredient_quantity-@quantity where ingredient_id=@ingredient_id and ingredient_quantity>@quantity";
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue("ingredient_id", (int)recipeIngredient["ingredient_id"]);
+                                    cmd.Parameters.AddWithValue("quantity", (int)recipeIngredient["total_quantity"]);
+                                    ingredientUpdateResult += cmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            if (balanceUpdateResult == 1)
+                                if (cartItems.Rows.Count == orderUpdateResult)
+                                    if (cartRecipeIngredients.Rows.Count == ingredientUpdateResult)
+                                    {
+                                        transaction.Commit();
+                                        cashInHand.DataBind();
+                                        orderStatus.Text = "Order completed successfully";
+                                        Session["cartItems"] = newEmptyCart();
+                                        displayCart((DataTable)Session["cartItems"]);
+                                        return;
+                                    }
+                                    else
+                                        orderStatus.Text = "Failed to update ingredients";
+                                else
+                                    orderStatus.Text = "Failed to insert orders";
                             else
-                                orderStatus.Text = "Failed to update ingredients";
+                                orderStatus.Text = "Failed to update balance";
+                        }
                         else
-                            orderStatus.Text = "Failed to insert orders";
-                    else
-                        orderStatus.Text = "Failed to update balance";
+                        {
+                            reader.Close();
+                            orderStatus.Text = "Unable to insert order (Cannot read current orders)";
+                        }
+                    }
                     transaction.Rollback();
 
                 }
