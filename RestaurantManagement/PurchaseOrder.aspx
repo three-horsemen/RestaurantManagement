@@ -34,10 +34,22 @@
         </UpdateParameters>
     </asp:SqlDataSource>
 
+    <h3>Ingredients</h3>
+    <asp:GridView ID="recipe" runat="server" DataSourceID="ingredientSource" AutoGenerateColumns="true" AutoGenerateEditButton="true" />
+    <asp:SqlDataSource ID="ingredientSource" runat="server" ConnectionString="<%$connectionStrings:luigis %>"
+        SelectCommand="select ingredient_name as Ingredient, ingredient_price as Price, ingredient_quantity as Quantity, ingredient_price*ingredient_quantity as Cost from Ingredients, Recipe where Ingredients.ingredient_id=Recipe.ingredient_id and Recipe.item_id=@item_id"
+        UpdateCommand="update Items set price=@price where item_id=@item_code">
+        <SelectParameters>
+            <asp:ControlParameter Name="item_id" ControlID="items" PropertyName="SelectedValue" />
+        </SelectParameters>
+        <UpdateParameters>
+            <asp:ControlParameter Name="item_code" ControlID="items" PropertyName="SelectedValue" />
+        </UpdateParameters>
+    </asp:SqlDataSource>
+
     <asp:Button ID="addToCart" runat="server" Text="Add To Cart" />
     <h3>Purchase Order</h3>
     <asp:GridView ID="purchaseOrder" runat="server"></asp:GridView>
     <asp:Button ID="confirmOrder" runat="server" Text="ConfirmOrder" />
 
 </asp:Content>
-
