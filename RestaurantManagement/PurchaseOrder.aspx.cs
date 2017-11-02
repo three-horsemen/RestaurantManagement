@@ -185,6 +185,7 @@ public partial class _Default : System.Web.UI.Page
                                     if (cartRecipeIngredients.Rows.Count == ingredientUpdateResult)
                                     {
                                         transaction.Commit();
+                                        cashInHand.DataBind();
                                         orderStatus.Text = "Order completed successfully";
                                         Session["cartItems"] = newEmptyCart();
                                         displayCart((DataTable)Session["cartItems"]);
