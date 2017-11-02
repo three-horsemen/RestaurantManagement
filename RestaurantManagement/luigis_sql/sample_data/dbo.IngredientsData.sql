@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[IngredientsData]
 AS
+	DELETE FROM Ingredients;
 	INSERT INTO Ingredients(ingredient_id, ingredient_name, ingredient_price)
 	VALUES
 	(1, 'Salt', 10),

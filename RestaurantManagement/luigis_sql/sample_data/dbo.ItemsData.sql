@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[ItemsData]
 AS
+	DELETE FROM Items;
 	INSERT INTO Items(item_id, name, price)
 	VALUES
 	(1, 'Burger', 100),
