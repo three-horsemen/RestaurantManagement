@@ -10,6 +10,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:Label ID="lastAccessLabel" runat="server"></asp:Label>
+        <asp:Button ID="clearCookieButton" Text="Forget I was here!" runat="server" OnClick="clearCookieButton_Click"/>
         <div>
             <h1>
                 <asp:Image ID="Image1" runat="server" ImageUrl="res/logo.png" Height="32px" Width="50px" />
@@ -17,8 +19,8 @@
             </h1>
             <nav>
                 <a href="Stocks.aspx">Stocks</a> |
-            <a href="PurchaseOrder.aspx">Purchase Order</a> |
-            <a href="Report.aspx">Sales & Expenses</a>
+                <a href="PurchaseOrder.aspx">Purchase Order</a> |
+                <a href="Report.aspx">Sales & Expenses</a>
             </nav>
             <asp:ContentPlaceHolder ID="Form" runat="server">
             </asp:ContentPlaceHolder>
