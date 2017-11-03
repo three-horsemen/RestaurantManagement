@@ -1,0 +1,31 @@
+﻿html,
+body {
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+#body {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#header {
+    padding: 10px;
+}
+
+#content-1 {
+    float: left;
+    width: 33%;
+}
+
+#content-2-1 {
+    float: left;
+    width: 33%;
+}
+
+#content-2-2 {
+    float: right;
+    width: 33%;
+}
+
