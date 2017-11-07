@@ -13,9 +13,8 @@
         <Fields>
             <asp:BoundField DataField="item_id" HeaderText="Item ID" ReadOnly="true" />
             <asp:BoundField DataField="name" HeaderText="Name" ReadOnly="true" />
-            <asp:BoundField DataField="price" HeaderText="PriceHidden" />
             <asp:TemplateField HeaderText="Price">
-                <EditItemTemplate>
+                <EditItemTemplate >
                     <asp:TextBox ID="itemPriceTB" runat="server" Text='<%# Bind("price") %>' />
                 </EditItemTemplate>
                 <ItemTemplate>
@@ -36,16 +35,9 @@
     </asp:SqlDataSource>
 
     <h3>Ingredients</h3>
-    <asp:GridView ID="recipe" runat="server" DataSourceID="ingredientSource" AutoGenerateColumns="false" AutoGenerateEditButton="true">
+    <asp:GridView ID="recipe" runat="server" DataSourceID="ingredientSource" AutoGenerateColumns="false" AutoGenerateEditButton="true" DataKeyNames="ingredient_id">
         <Columns>
-            <asp:TemplateField HeaderText="Ingredient ID">
-                <EditItemTemplate>
-                    <asp:Label ID="ingredient_id" Text='<%# Bind("ingredient_id") %>' runat="server" />
-                </EditItemTemplate>
-                <ItemTemplate>
-                    <asp:Label ID="ingredient_id" Text='<%# Eval("ingredient_id") %>' runat="server" />
-                </ItemTemplate>
-            </asp:TemplateField>
+            <asp:BoundField DataField="ingredient_id" HeaderText="ID" ReadOnly="true"/>
             <asp:BoundField DataField="Ingredient" HeaderText="Ingredient" ReadOnly="true" />
             <asp:BoundField DataField="Price" HeaderText="Price" ReadOnly="true" />
             <asp:BoundField DataField="Quantity" HeaderText="Quantity" />
